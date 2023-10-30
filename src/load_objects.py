@@ -1,11 +1,10 @@
 from base import RecommendData
+from data import RecommendListDataset
 import os
-
-def load_rawdataset(path):
-    rd = RecommendData(path)
-    import ipdb
-    ipdb.set_trace()
 
 PATH = os.path.join('/home/doolee13/LangRec/preprocess', 'train_data.json')
 
-load_rawdataset(PATH)
+rd = RecommendData(PATH)
+train_raw = RecommendListDataset(rd, max_len=1024)
+import ipdb
+ipdb.set_trace()

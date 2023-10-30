@@ -42,7 +42,7 @@ class RecTokenizer(Tokenizer):
                                            'bos_token': '<s>', 
                                            'sep_token': '</s>', 
                                            'pad_token': '<|pad|>'})
-        super.__init__(self.tokenizer.convert_tokens_to_ids('<|pad|>'), 
+        super().__init__(self.tokenizer.convert_tokens_to_ids('<|pad|>'), 
                          self.tokenizer.convert_tokens_to_ids('</s>'), 
                          self.tokenizer.convert_tokens_to_ids('</a>'), 
                          self.tokenizer.convert_tokens_to_ids('<s>'), 
