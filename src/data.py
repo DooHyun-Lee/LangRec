@@ -6,6 +6,12 @@ from torch.utils.data import Dataset
 from environment import Language_Observation, RecObservation
 from tokenizer import Tokenizer, RecTokenizer
 from base import RecommendData
+import numpy as np
+from tqdm import tqdm
+
+def load_RecListDataset(path, max_len=1024):
+    rd = RecommendData(path)
+    return RecommendListDataset(rd, max_len)
 
 @dataclass
 class DataPoint:
@@ -51,11 +57,29 @@ class DataPoint:
             if t == tokenizer.eos_token_id:
                 curr_idx = i
             elif t == tokenizer.eoa_token_id:
+                # TODO : maybe don't include first recommending action?  
                 action_idxs.extend(list(range(curr_idx, i))) # record from <\s> ~ before <\a>
                 state_idxs.extend(list(range(curr_idx, i)))
                 curr_idx = i
         state_idxs.append(len(tokens)-1)
         terminals = ([0] * (len(state_idxs)-1)) + [int(terminal)]
+        
+        # enhancement not to iterate all over tokens(too much time.. )
+        # not big enhancement 
+        '''
+        token_array = np.array(tokens)
+        eos_indices = np.where(token_array == tokenizer.eos_token_id)
+        eoa_indices = np.where(token_array == tokenizer.eoa_token_id)
+        ranges = list(zip(eos_indices[0], eoa_indices[0]))
+        state_idxs = []
+        action_idxs = []
+        for (start, end) in ranges:
+            action_idxs.extend(list(range(start, end)))
+            state_idxs.extend(list(range(start, end)))
+            
+        state_idxs.append(len(tokens)-1)
+        terminals = ([0] * (len(state_idxs)-1)) + [int(terminal)]
+        '''
         return cls(raw_str, tokens, state_idxs, action_idxs, terminals)
 
 class RL_Dataset(ABC):
@@ -84,6 +108,7 @@ class List_RL_Dataset(RL_Dataset):
     def size(self) -> int:
         pass 
 
+
 class RecommendListDataset(List_RL_Dataset):
     def __init__(self, data: RecommendData,
                  max_len : Optional[int]) -> None:
@@ -91,7 +116,7 @@ class RecommendListDataset(List_RL_Dataset):
         super().__init__(tokenizer, max_len)
         self.data = data
         self.datapoints = []
-        for item in self.data: # item : Scene 
+        for item in tqdm(self.data): # item : Scene 
             obs = RecObservation(item, item.events[-1]) # calls and makes events into sequence
             self.datapoints.append(DataPoint.from_obs(obs, self.tokenizer)) # convert sequence string into token, make state, action idx, attention masks
 
