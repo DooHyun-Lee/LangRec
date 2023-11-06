@@ -8,6 +8,7 @@ from models.bc_lm import load_bclm, load_evaluator
 from tqdm import tqdm
 import pickle 
 from models.base import to
+import wandb
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--path', default='/home/doolee13/LangRec/preprocess', type=str)
@@ -29,7 +30,7 @@ args = parser.parse_args()
 
 if __name__ == '__main__': 
     accelerator = Accelerator()
-    
+    wandb.init(project='train_bc')
     train_path = os.path.join(args.path, 'train_data.json')
     eval_path = os.path.join(args.path, 'valid_data.json')
     path_train = os.path.join('/home/doolee13/LangRec/preprocess', 'RecommendListDataset_train.pkl')
@@ -80,6 +81,7 @@ if __name__ == '__main__':
                 optim.step()
                 optim.zero_grad()
                 print(f'current loss at {step} : {loss_log}')
+                wandb.log({"step" : step, "train_loss" : loss_log})
                 loss_log = 0
             if (step+1) % args.eval_every == 0 :
                 model.eval()
@@ -93,8 +95,10 @@ if __name__ == '__main__':
                         if i == len(eval_data_loader) -1:
                             test_act = evaluator.evaluate(eval_items)
                             print(f'sample sentence at {step} : {test_act[0]}')
+                            wandb.log({"created output": test_act[0]})
                     eval_loss_log /= len(eval_data_loader)
                     print(f'evaluation loss at {step} : {eval_loss_log}')
+                    wandb.log({"eval_loss" : eval_loss_log})
                     if max_loss_log > eval_loss_log:
                         max_loss_log = eval_loss_log
                         if not os.path.exists(args.checkpoint_dir):

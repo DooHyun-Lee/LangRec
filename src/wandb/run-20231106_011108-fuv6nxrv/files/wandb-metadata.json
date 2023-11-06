@@ -1,0 +1,89 @@
+{
+    "os": "Linux-4.15.0-66-generic-x86_64-with-glibc2.27",
+    "python": "3.10.11",
+    "heartbeatAt": "2023-11-05T16:11:09.578450",
+    "startedAt": "2023-11-05T16:11:08.919855",
+    "docker": null,
+    "cuda": "10.0.130",
+    "args": [],
+    "state": "running",
+    "program": "/home/doolee13/LangRec/src/train_bc.py",
+    "codePath": "src/train_bc.py",
+    "git": {
+        "remote": "https://github.com/DooHyun-Lee/LangRec.git",
+        "commit": "9ca7f5d9e2ca578e5c7248bebfaa70403507c568"
+    },
+    "email": "1997ldh3@gmail.com",
+    "root": "/home/doolee13/LangRec",
+    "host": "betit",
+    "username": "doolee13",
+    "executable": "/home/doolee13/anaconda3/envs/llmreward2/bin/python3",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 3.9785,
+        "min": 800.0,
+        "max": 4500.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4.095,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 3.935,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 3.965,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 4.077,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 3.88,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 3.709,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 4.082,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 4.085,
+            "min": 800.0,
+            "max": 4500.0
+        }
+    ],
+    "disk": {
+        "total": 353.39391708374023,
+        "used": 168.84369659423828
+    },
+    "gpu": "GeForce GTX 1080 Ti",
+    "gpu_count": 2,
+    "gpu_devices": [
+        {
+            "name": "GeForce GTX 1080 Ti",
+            "memory_total": 11721113600
+        },
+        {
+            "name": "GeForce GTX 1080 Ti",
+            "memory_total": 11721506816
+        }
+    ],
+    "memory": {
+        "total": 31.346939086914062
+    }
+}
